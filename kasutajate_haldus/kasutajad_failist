@@ -1,0 +1,17 @@
+#!/bin/bash
+#kasutajate lisamise skript
+if [ $# -ne 1 ];then
+ echo "usermanual:$0 failinimi"
+else
+ failinimi=$1
+ if [ -f $failinimi -a -r $failinimi ]; then
+ echo "fail on korras"
+ for nimi in $(cat $failinimi)
+ do 
+ sh lisa_kasutaja $nimi
+ done
+ else
+ echo "probleem failiga $failinimi"
+ fi 
+#
+fi
