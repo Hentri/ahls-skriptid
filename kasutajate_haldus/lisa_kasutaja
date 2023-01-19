@@ -1,0 +1,15 @@
+#!/bin/bash
+if [ $# -ne 1 ]; then
+ echo "kasutusjuhend: $0 kasutajanimi"
+else
+ kasutajanimi=$1
+ useradd $kasutajanimi -m -s /home/newusers #/bin/bash
+ if [ $? -eq 0 ]; then
+ #echo "kasutaja nimega $kasutajanimi juba eksisteerib"
+ cat /etc/passwd | grep $ kasutajanimi
+ ls -la /home/$kasutajanimi
+ else 
+ echo "probleem kasutaja $kasutajanimi lisamisega"
+ echo "probleemi kood $?"
+ fi
+fi
