@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# kasutajate lisamise skript
+echo $EUID
+if [ "$EUID" -ne 0 ]; then
+	echo "Jooksuta rootina"
+	exit
+else
+	if [ $# -ne 2 ]; then
+		echo "Kasutsjuhend: $0 failkasutajad failparoolid"
+	else
+		failkasutajad=$1
+		failparoolid=$2
+		if [ -f $failkasutajad -a -r $failkasutajad ] && [ -f $failparoolid -a -r $failparoolid ]; then
+			echo "fail on korras"
+			paste -d":" $failkasutajad $failparoolid >> fail.txt
+			for rida in $(cat fail.txt)
+			do
+				kasutaja=$(echo "$rida" | cut -f1 -d:)
+				useradd $kasutaja -m -s /bin/bash
+				echo "$rida" | chpasswd
+				cat /etc/passwd | grep $kasutaja
+				cat /etc/shadow | grep $kasutaja
+			done
+			rm fail.txt
+		else
+			echo "probleem failiga $fail"
+		fi
+	fi
+fi
